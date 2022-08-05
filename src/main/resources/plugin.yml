@@ -1,0 +1,3 @@
+main: "com.github.jinnosukeKato.milib.example.MiLibPlugin"
+version: "1.19.1"
+name: "MiLib-Example-Plugin"
