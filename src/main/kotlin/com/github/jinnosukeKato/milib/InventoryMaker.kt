@@ -59,6 +59,7 @@ class InventoryAttributesBuilder {
 class InventoryClickEventBuilder : Listener {
     lateinit var inventory: Inventory
     var slot = 0
+    var cancel = true
     var content: (InventoryClickEvent) -> Unit = {}
 
     init {
@@ -69,10 +70,15 @@ class InventoryClickEventBuilder : Listener {
 
     @EventHandler
     fun onEvent(event: InventoryClickEvent) {
-        // ここのつめが甘い
-        if (inventory.size >= event.slot && event.inventory == inventory && event.currentItem == inventory.getItem(event.slot)) {
-            content(event)
-        }
+        if (event.inventory != inventory || event.currentItem == null || event.currentItem!!.type.isAir)
+            return
+
+        if (event.currentItem != inventory.getItem(event.slot))
+            return
+
+        event.isCancelled = cancel
+
+        content(event)
     }
 }
 
