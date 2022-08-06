@@ -1,7 +1,6 @@
 package com.github.jinnosukeKato.milib.example
 
 import com.github.jinnosukeKato.milib.inventoryMaker
-import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
