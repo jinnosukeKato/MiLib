@@ -32,6 +32,8 @@ class InventoryAttributesBuilder {
         val inventorySlotBuilder = InventorySlotBuilder()
         inventorySlotBuilder.lambda()
         val pair = inventorySlotBuilder.build()
+        check(pair.first in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
+
         itemMap[pair.first] = pair.second
     }
 
@@ -45,6 +47,8 @@ class InventoryAttributesBuilder {
     // TODO: 2022/08/05 アイテムが突っ込まれたときの処理
 
     fun build(): Inventory {
+        check(row in 1..6) { "Row must be in the range of 1 to 6." }
+
         val inventory = Bukkit.createInventory(null, row * 9, displayName)
         eventSet.forEach {
             it.inventory = inventory
@@ -70,6 +74,8 @@ class InventoryClickEventBuilder : Listener {
 
     @EventHandler
     fun onEvent(event: InventoryClickEvent) {
+        check(slot in 0..inventory.size) { "Slot must be in the range of 0 to $inventory.size." }
+
         if (event.inventory != inventory || event.currentItem == null || event.currentItem!!.type.isAir)
             return
 
