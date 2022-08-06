@@ -30,13 +30,12 @@ class MiLibPlugin : JavaPlugin(), Listener {
                 setItemStack {
                     slot = 2
                     itemStack = ItemStack(Material.ACACIA_BOAT)
-                }
 
-                addClickEventListener {
-                    slot = 1
-                    content = {
-                        val p = it.whoClicked as Player
-                        p.sendMessage("You clicked!")
+                    addClickEventListener {
+                        content = {
+                            (it.whoClicked as Player).sendMessage("You clicked!")
+                            it.isCancelled = true
+                        }
                     }
                 }
             }

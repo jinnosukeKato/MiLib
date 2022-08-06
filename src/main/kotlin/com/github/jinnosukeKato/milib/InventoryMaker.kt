@@ -31,17 +31,11 @@ class InventoryAttributesBuilder {
     fun setItemStack(lambda: InventorySlotBuilder.() -> Unit) {
         val inventorySlotBuilder = InventorySlotBuilder()
         inventorySlotBuilder.lambda()
-        val pair = inventorySlotBuilder.build()
-        check(pair.first in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
+        val triple = inventorySlotBuilder.build()
+        check(triple.first in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
-        itemMap[pair.first] = pair.second
-    }
-
-    @MiLibDSL
-    fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
-        val invClkEventBuilder = InventoryClickEventBuilder()
-        invClkEventBuilder.lambda()
-        eventSet.add(invClkEventBuilder)
+        itemMap[triple.first] = triple.second
+        triple.third?.let { eventSet.add(it) }
     }
 
     // TODO: 2022/08/05 アイテムが突っ込まれたときの処理
@@ -60,10 +54,24 @@ class InventoryAttributesBuilder {
     }
 }
 
-class InventoryClickEventBuilder : Listener {
-    lateinit var inventory: Inventory
+class InventorySlotBuilder {
     var slot = 0
-    var cancel = true
+    var itemStack = ItemStack(Material.AIR)
+    private var invClkEventBuilder: InventoryClickEventBuilder? = null
+
+    @MiLibDSL
+    fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
+        invClkEventBuilder = InventoryClickEventBuilder(slot)
+        invClkEventBuilder!!.lambda()
+    }
+
+    fun build(): Triple<Int, ItemStack, InventoryClickEventBuilder?> {
+        return Triple(slot, itemStack, invClkEventBuilder)
+    }
+}
+
+class InventoryClickEventBuilder(private val slot: Int) : Listener {
+    lateinit var inventory: Inventory
     var content: (InventoryClickEvent) -> Unit = {}
 
     init {
@@ -82,17 +90,6 @@ class InventoryClickEventBuilder : Listener {
         if (event.currentItem != inventory.getItem(slot))
             return
 
-        event.isCancelled = cancel
-
         content(event)
-    }
-}
-
-class InventorySlotBuilder {
-    var slot = 0
-    var itemStack = ItemStack(Material.AIR)
-
-    fun build(): Pair<Int, ItemStack> {
-        return Pair(slot, itemStack)
     }
 }

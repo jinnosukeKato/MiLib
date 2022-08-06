@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.jinnosukeKato"
-version = "0.1"
+version = "0.2"
 
 java {
     toolchain {
