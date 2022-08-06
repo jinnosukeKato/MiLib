@@ -79,7 +79,7 @@ class InventoryClickEventBuilder : Listener {
         if (event.inventory != inventory || event.currentItem == null || event.currentItem!!.type.isAir)
             return
 
-        if (event.currentItem != inventory.getItem(event.slot))
+        if (event.currentItem != inventory.getItem(slot))
             return
 
         event.isCancelled = cancel
