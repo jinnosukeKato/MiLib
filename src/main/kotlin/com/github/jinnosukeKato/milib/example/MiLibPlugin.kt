@@ -27,6 +27,11 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     itemStack = ItemStack(Material.BAKED_POTATO)
                 }
 
+                setItemStack {
+                    slot = 2
+                    itemStack = ItemStack(Material.ACACIA_BOAT)
+                }
+
                 addClickEventListener {
                     slot = 1
                     content = {
