@@ -16,7 +16,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
     }
 
     @EventHandler
-    fun onChat(event: PlayerInteractEvent) {
+    fun onClick(event: PlayerInteractEvent) {
         logger.info("Event Fire!")
         val inventory =
             inventoryMaker {
