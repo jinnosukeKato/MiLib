@@ -31,11 +31,11 @@ class InventoryAttributesBuilder {
     fun setItemStack(lambda: InventorySlotBuilder.() -> Unit) {
         val inventorySlotBuilder = InventorySlotBuilder()
         inventorySlotBuilder.lambda()
-        val triple = inventorySlotBuilder.build()
-        check(triple.first in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
+        val builtInvSlotBuilder = inventorySlotBuilder.build()
+        check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
-        itemMap[triple.first] = triple.second
-        triple.third?.let { eventSet.add(it) }
+        itemMap[builtInvSlotBuilder.slot] = builtInvSlotBuilder.itemStack
+        eventSet += builtInvSlotBuilder.invClickEventBuilderSet
     }
 
     // TODO: 2022/08/05 アイテムが突っ込まれたときの処理
@@ -57,20 +57,25 @@ class InventoryAttributesBuilder {
 class InventorySlotBuilder {
     var slot = 0
     var itemStack = ItemStack(Material.AIR)
-    private var invClkEventBuilder: InventoryClickEventBuilder? = null
+    var displayOnly = false
+    val invClickEventBuilderSet: MutableSet<InventoryClickEventBuilder> = mutableSetOf()
 
     @MiLibDSL
     fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
-        invClkEventBuilder = InventoryClickEventBuilder(slot)
-        invClkEventBuilder!!.lambda()
+        val invClkEventBuilder = InventoryClickEventBuilder(slot, displayOnly)
+        invClkEventBuilder.lambda()
+        invClickEventBuilderSet += invClkEventBuilder
     }
 
-    fun build(): Triple<Int, ItemStack, InventoryClickEventBuilder?> {
-        return Triple(slot, itemStack, invClkEventBuilder)
+    fun build(): InventorySlotBuilder {
+        if (invClickEventBuilderSet.isEmpty() && displayOnly)
+            invClickEventBuilderSet += InventoryClickEventBuilder(slot, true)
+
+        return this
     }
 }
 
-class InventoryClickEventBuilder(private val slot: Int) : Listener {
+class InventoryClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
     var content: (InventoryClickEvent) -> Unit = {}
 
@@ -89,6 +94,8 @@ class InventoryClickEventBuilder(private val slot: Int) : Listener {
 
         if (event.currentItem != inventory.getItem(slot))
             return
+
+        event.isCancelled = displayOnly
 
         content(event)
     }

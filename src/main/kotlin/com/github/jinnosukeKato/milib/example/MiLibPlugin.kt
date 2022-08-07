@@ -25,6 +25,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                 setItemStack {
                     slot = 1
                     itemStack = ItemStack(Material.BAKED_POTATO)
+                    displayOnly = true
                 }
 
                 setItemStack {
