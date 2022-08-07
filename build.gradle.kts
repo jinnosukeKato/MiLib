@@ -33,7 +33,7 @@ task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
     dependsOn("shadowJar") // ビルドタスク
     doFirst {
         copy {
-            from(buildDir.resolve("libs/MiLib-0.1-all.jar")) // build/libs/example.jar
+            from(buildDir.resolve("libs/MiLib-$version-all.jar")) // build/libs/example.jar
             into(buildDir.resolve("MinecraftPaperServer/plugins")) // build/MinecraftPaperServer/plugins
         }
     }
