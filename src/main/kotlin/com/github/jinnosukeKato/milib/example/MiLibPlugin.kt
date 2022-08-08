@@ -16,7 +16,6 @@ class MiLibPlugin : JavaPlugin(), Listener {
 
     @EventHandler
     fun onClick(event: PlayerInteractEvent) {
-        logger.info("Event Fire!")
         val inventory =
             inventoryMaker {
                 displayName = "Test Inv"
@@ -25,6 +24,12 @@ class MiLibPlugin : JavaPlugin(), Listener {
                 setItemStack {
                     slot = 1
                     itemStack = ItemStack(Material.BAKED_POTATO)
+                    displayOnly = true
+                }
+
+                setItemStacks {
+                    slotRange = 9..17
+                    itemStack = ItemStack(Material.GLASS_PANE)
                     displayOnly = true
                 }
 

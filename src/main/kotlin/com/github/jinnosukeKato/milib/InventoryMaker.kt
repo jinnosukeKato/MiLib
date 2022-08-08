@@ -38,6 +38,20 @@ class InventoryAttributesBuilder {
         eventSet += builtInvSlotBuilder.invClickEventBuilderSet
     }
 
+    @MiLibDSL
+    fun setItemStacks(lambda: InventoryMultiSlotsBuilder.() -> Unit) {
+        val inventoryMultiSlotsBuilder = InventoryMultiSlotsBuilder()
+        inventoryMultiSlotsBuilder.lambda()
+
+        for (builder in inventoryMultiSlotsBuilder.build()) {
+            val built = builder.build()
+            check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
+
+            itemMap[built.slot] = built.itemStack
+            eventSet += built.invClickEventBuilderSet
+        }
+    }
+
     // TODO: 2022/08/05 アイテムが突っ込まれたときの処理
 
     fun build(): Inventory {
@@ -72,6 +86,37 @@ class InventorySlotBuilder {
             invClickEventBuilderSet += InventoryClickEventBuilder(slot, true)
 
         return this
+    }
+}
+
+class InventoryMultiSlotsBuilder {
+    var slotRange = 0..5
+    var itemStack = ItemStack(Material.AIR)
+    var displayOnly = false
+
+    private val inventorySlotBuilderSet = mutableSetOf<InventorySlotBuilder>()
+    private val inventoryClickEventBuilderLambdaSet = mutableSetOf<InventoryClickEventBuilder.() -> Unit>()
+
+    @MiLibDSL
+    fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
+        inventoryClickEventBuilderLambdaSet += lambda
+    }
+
+    fun build(): MutableSet<InventorySlotBuilder> {
+        for (slot in slotRange) {
+            val inventorySlotBuilder = InventorySlotBuilder()
+
+            inventorySlotBuilder.slot = slot
+            inventorySlotBuilder.itemStack = itemStack
+            inventorySlotBuilder.displayOnly = displayOnly
+
+            for (lambda in inventoryClickEventBuilderLambdaSet) {
+                inventorySlotBuilder.addClickEventListener(lambda)
+            }
+
+            inventorySlotBuilderSet += inventorySlotBuilder
+        }
+        return inventorySlotBuilderSet
     }
 }
 
