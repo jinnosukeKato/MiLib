@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
+@Suppress("unused")
 class MiLibPlugin : JavaPlugin(), Listener {
     override fun onEnable() {
         server.pluginManager.registerEvents(this, this)
@@ -31,6 +32,12 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     slotRange = 9..17
                     itemStack = ItemStack(Material.GLASS_PANE)
                     displayOnly = true
+
+                    addClickEventListener {
+                        content = {
+                            (it.whoClicked as Player).sendMessage("You clicked!")
+                        }
+                    }
                 }
 
                 setItemStack {

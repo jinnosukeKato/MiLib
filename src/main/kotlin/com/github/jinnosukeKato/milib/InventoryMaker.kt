@@ -21,13 +21,13 @@ fun inventoryMaker(lambda: InventoryAttributesBuilder.() -> Unit): Inventory {
     return inventoryAttributesBuilder.build()
 }
 
+@MiLibDSL
 class InventoryAttributesBuilder {
     var displayName = ""
     var row = 1
     private val itemMap = mutableMapOf<Int, ItemStack>()
     private val eventSet = mutableSetOf<InventoryClickEventBuilder>()
 
-    @MiLibDSL
     fun setItemStack(lambda: InventorySlotBuilder.() -> Unit) {
         val inventorySlotBuilder = InventorySlotBuilder()
         inventorySlotBuilder.lambda()
@@ -38,7 +38,6 @@ class InventoryAttributesBuilder {
         eventSet += builtInvSlotBuilder.invClickEventBuilderSet
     }
 
-    @MiLibDSL
     fun setItemStacks(lambda: InventoryMultiSlotsBuilder.() -> Unit) {
         val inventoryMultiSlotsBuilder = InventoryMultiSlotsBuilder()
         inventoryMultiSlotsBuilder.lambda()
@@ -68,13 +67,13 @@ class InventoryAttributesBuilder {
     }
 }
 
+@MiLibDSL
 class InventorySlotBuilder {
     var slot = 0
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
     val invClickEventBuilderSet: MutableSet<InventoryClickEventBuilder> = mutableSetOf()
 
-    @MiLibDSL
     fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
         val invClkEventBuilder = InventoryClickEventBuilder(slot, displayOnly)
         invClkEventBuilder.lambda()
@@ -89,6 +88,7 @@ class InventorySlotBuilder {
     }
 }
 
+@MiLibDSL
 class InventoryMultiSlotsBuilder {
     var slotRange = 0..5
     var itemStack = ItemStack(Material.AIR)
@@ -97,7 +97,6 @@ class InventoryMultiSlotsBuilder {
     private val inventorySlotBuilderSet = mutableSetOf<InventorySlotBuilder>()
     private val inventoryClickEventBuilderLambdaSet = mutableSetOf<InventoryClickEventBuilder.() -> Unit>()
 
-    @MiLibDSL
     fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
         inventoryClickEventBuilderLambdaSet += lambda
     }
@@ -120,6 +119,7 @@ class InventoryMultiSlotsBuilder {
     }
 }
 
+@MiLibDSL
 class InventoryClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
     var content: (InventoryClickEvent) -> Unit = {}
