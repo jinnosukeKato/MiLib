@@ -74,7 +74,7 @@ class InventorySlotBuilder {
     var displayOnly = false
     val invClickEventBuilderSet: MutableSet<InventoryClickEventBuilder> = mutableSetOf()
 
-    fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
+    fun onClick(lambda: InventoryClickEventBuilder.() -> Unit) {
         val invClkEventBuilder = InventoryClickEventBuilder(slot, displayOnly)
         invClkEventBuilder.lambda()
         invClickEventBuilderSet += invClkEventBuilder
@@ -97,7 +97,7 @@ class InventoryMultiSlotsBuilder {
     private val inventorySlotBuilderSet = mutableSetOf<InventorySlotBuilder>()
     private val inventoryClickEventBuilderLambdaSet = mutableSetOf<InventoryClickEventBuilder.() -> Unit>()
 
-    fun addClickEventListener(lambda: InventoryClickEventBuilder.() -> Unit) {
+    fun onClick(lambda: InventoryClickEventBuilder.() -> Unit) {
         inventoryClickEventBuilderLambdaSet += lambda
     }
 
@@ -110,7 +110,7 @@ class InventoryMultiSlotsBuilder {
             inventorySlotBuilder.displayOnly = displayOnly
 
             for (lambda in inventoryClickEventBuilderLambdaSet) {
-                inventorySlotBuilder.addClickEventListener(lambda)
+                inventorySlotBuilder.onClick(lambda)
             }
 
             inventorySlotBuilderSet += inventorySlotBuilder

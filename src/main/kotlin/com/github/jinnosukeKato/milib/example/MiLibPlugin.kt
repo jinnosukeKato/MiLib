@@ -33,7 +33,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     itemStack = ItemStack(Material.GLASS_PANE)
                     displayOnly = true
 
-                    addClickEventListener {
+                    onClick {
                         content = {
                             (it.whoClicked as Player).sendMessage("You clicked!")
                         }
@@ -44,7 +44,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     slot = 2
                     itemStack = ItemStack(Material.ACACIA_BOAT)
 
-                    addClickEventListener {
+                    onClick {
                         content = {
                             (it.whoClicked as Player).sendMessage("You clicked!")
                             it.isCancelled = true
