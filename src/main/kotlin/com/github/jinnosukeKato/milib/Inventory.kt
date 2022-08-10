@@ -51,8 +51,6 @@ class InventoryBuilder {
         }
     }
 
-    // TODO: 2022/08/05 アイテムが突っ込まれたときの処理
-
     fun build(): Inventory {
         check(row in 1..6) { "Row must be in the range of 1 to 6." }
 
