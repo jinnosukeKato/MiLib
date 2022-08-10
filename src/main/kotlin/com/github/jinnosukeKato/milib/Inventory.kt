@@ -9,9 +9,6 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin.getProvidingPlugin
 
-@DslMarker
-annotation class MiLibDSL
-
 @MiLibDSL
 fun inventoryBuilder(lambda: InventoryBuilder.() -> Unit): Inventory {
     val inventoryBuilder = InventoryBuilder()
