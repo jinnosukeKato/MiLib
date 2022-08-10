@@ -26,28 +26,28 @@ class InventoryAttributesBuilder {
     var displayName = ""
     var row = 1
     private val itemMap = mutableMapOf<Int, ItemStack>()
-    private val eventSet = mutableSetOf<InventoryClickEventBuilder>()
+    private val eventSet = mutableSetOf<OnClickEventBuilder>()
 
-    fun setItemStack(lambda: InventorySlotBuilder.() -> Unit) {
-        val inventorySlotBuilder = InventorySlotBuilder()
-        inventorySlotBuilder.lambda()
-        val builtInvSlotBuilder = inventorySlotBuilder.build()
+    fun setItem(lambda: SlotBuilder.() -> Unit) {
+        val slotBuilder = SlotBuilder()
+        slotBuilder.lambda()
+        val builtInvSlotBuilder = slotBuilder.build()
         check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
         itemMap[builtInvSlotBuilder.slot] = builtInvSlotBuilder.itemStack
-        eventSet += builtInvSlotBuilder.invClickEventBuilderSet
+        eventSet += builtInvSlotBuilder.invOnClickEventBuilderSet
     }
 
-    fun setItemStacks(lambda: InventoryMultiSlotsBuilder.() -> Unit) {
-        val inventoryMultiSlotsBuilder = InventoryMultiSlotsBuilder()
-        inventoryMultiSlotsBuilder.lambda()
+    fun setItems(lambda: MultiSlotsBuilder.() -> Unit) {
+        val multiSlotsBuilder = MultiSlotsBuilder()
+        multiSlotsBuilder.lambda()
 
-        for (builder in inventoryMultiSlotsBuilder.build()) {
+        for (builder in multiSlotsBuilder.build()) {
             val built = builder.build()
             check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
             itemMap[built.slot] = built.itemStack
-            eventSet += built.invClickEventBuilderSet
+            eventSet += built.invOnClickEventBuilderSet
         }
     }
 
@@ -68,59 +68,59 @@ class InventoryAttributesBuilder {
 }
 
 @MiLibDSL
-class InventorySlotBuilder {
+class SlotBuilder {
     var slot = 0
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
-    val invClickEventBuilderSet: MutableSet<InventoryClickEventBuilder> = mutableSetOf()
+    val invOnClickEventBuilderSet: MutableSet<OnClickEventBuilder> = mutableSetOf()
 
-    fun onClick(lambda: InventoryClickEventBuilder.() -> Unit) {
-        val invClkEventBuilder = InventoryClickEventBuilder(slot, displayOnly)
+    fun onClick(lambda: OnClickEventBuilder.() -> Unit) {
+        val invClkEventBuilder = OnClickEventBuilder(slot, displayOnly)
         invClkEventBuilder.lambda()
-        invClickEventBuilderSet += invClkEventBuilder
+        invOnClickEventBuilderSet += invClkEventBuilder
     }
 
-    fun build(): InventorySlotBuilder {
-        if (invClickEventBuilderSet.isEmpty() && displayOnly)
-            invClickEventBuilderSet += InventoryClickEventBuilder(slot, true)
+    fun build(): SlotBuilder {
+        if (invOnClickEventBuilderSet.isEmpty() && displayOnly)
+            invOnClickEventBuilderSet += OnClickEventBuilder(slot, true)
 
         return this
     }
 }
 
 @MiLibDSL
-class InventoryMultiSlotsBuilder {
+class MultiSlotsBuilder {
     var slotRange = 0..5
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
 
-    private val inventorySlotBuilderSet = mutableSetOf<InventorySlotBuilder>()
-    private val inventoryClickEventBuilderLambdaSet = mutableSetOf<InventoryClickEventBuilder.() -> Unit>()
+    private val slotBuilderSet = mutableSetOf<SlotBuilder>()
+    private val onClickEventBuilderLambdaSet = mutableSetOf<OnClickEventBuilder.() -> Unit>()
 
-    fun onClick(lambda: InventoryClickEventBuilder.() -> Unit) {
-        inventoryClickEventBuilderLambdaSet += lambda
+    fun onClick(lambda: OnClickEventBuilder.() -> Unit) {
+        onClickEventBuilderLambdaSet += lambda
     }
 
-    fun build(): MutableSet<InventorySlotBuilder> {
+    fun build(): MutableSet<SlotBuilder> {
         for (slot in slotRange) {
-            val inventorySlotBuilder = InventorySlotBuilder()
+            val slotBuilder = SlotBuilder()
 
-            inventorySlotBuilder.slot = slot
-            inventorySlotBuilder.itemStack = itemStack
-            inventorySlotBuilder.displayOnly = displayOnly
+            slotBuilder.slot = slot
+            slotBuilder.itemStack = itemStack
+            slotBuilder.displayOnly = displayOnly
 
-            for (lambda in inventoryClickEventBuilderLambdaSet) {
-                inventorySlotBuilder.onClick(lambda)
+            for (lambda in onClickEventBuilderLambdaSet) {
+                slotBuilder.onClick(lambda)
             }
 
-            inventorySlotBuilderSet += inventorySlotBuilder
+            slotBuilderSet += slotBuilder
         }
-        return inventorySlotBuilderSet
+        return slotBuilderSet
     }
 }
 
 @MiLibDSL
-class InventoryClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
+class OnClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
     var content: (InventoryClickEvent) -> Unit = {}
 

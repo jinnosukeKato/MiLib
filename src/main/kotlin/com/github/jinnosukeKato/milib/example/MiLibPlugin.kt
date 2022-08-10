@@ -22,13 +22,13 @@ class MiLibPlugin : JavaPlugin(), Listener {
                 displayName = "Test Inv"
                 row = 6
 
-                setItemStack {
+                setItem {
                     slot = 1
                     itemStack = ItemStack(Material.BAKED_POTATO)
                     displayOnly = true
                 }
 
-                setItemStacks {
+                setItems {
                     slotRange = 9..17
                     itemStack = ItemStack(Material.GLASS_PANE)
                     displayOnly = true
@@ -40,7 +40,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     }
                 }
 
-                setItemStack {
+                setItem {
                     slot = 2
                     itemStack = ItemStack(Material.ACACIA_BOAT)
 
