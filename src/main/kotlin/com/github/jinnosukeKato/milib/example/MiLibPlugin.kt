@@ -1,6 +1,6 @@
 package com.github.jinnosukeKato.milib.example
 
-import com.github.jinnosukeKato.milib.inventoryMaker
+import com.github.jinnosukeKato.milib.inventoryBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -18,7 +18,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
     @EventHandler
     fun onClick(event: PlayerInteractEvent) {
         val inventory =
-            inventoryMaker {
+            inventoryBuilder {
                 displayName = "Test Inv"
                 row = 6
 

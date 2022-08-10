@@ -13,16 +13,16 @@ import org.bukkit.plugin.java.JavaPlugin.getProvidingPlugin
 annotation class MiLibDSL
 
 @MiLibDSL
-fun inventoryMaker(lambda: InventoryAttributesBuilder.() -> Unit): Inventory {
-    val inventoryAttributesBuilder = InventoryAttributesBuilder()
+fun inventoryBuilder(lambda: InventoryBuilder.() -> Unit): Inventory {
+    val inventoryBuilder = InventoryBuilder()
     // lambdaを実行
-    inventoryAttributesBuilder.lambda()
+    inventoryBuilder.lambda()
     // ビルドをかけて Inventory で返す
-    return inventoryAttributesBuilder.build()
+    return inventoryBuilder.build()
 }
 
 @MiLibDSL
-class InventoryAttributesBuilder {
+class InventoryBuilder {
     var displayName = ""
     var row = 1
     private val itemMap = mutableMapOf<Int, ItemStack>()
