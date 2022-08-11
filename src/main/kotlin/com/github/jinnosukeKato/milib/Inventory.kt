@@ -110,7 +110,6 @@ class MultiSlotsBuilder {
     }
 }
 
-// TODO: 2022/08/11 builderを継承させる
 @MiLibDSL
 class OnClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
