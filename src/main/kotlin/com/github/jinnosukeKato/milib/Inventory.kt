@@ -11,13 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin.getProvidingPlugin
 
 @MiLibDSL
 fun inventoryBuilder(init: InventoryBuilder.() -> Unit): Inventory {
-    val inventoryBuilder = InventoryBuilder()
-    inventoryBuilder.init()
-    return inventoryBuilder.build()
+    return build(InventoryBuilder(), init)
 }
 
 @MiLibDSL
-class InventoryBuilder {
+class InventoryBuilder : Builder<Inventory> {
     var displayName = ""
     var row = 1
     private val itemMap = mutableMapOf<Int, ItemStack>()
@@ -46,7 +44,7 @@ class InventoryBuilder {
         }
     }
 
-    fun build(): Inventory {
+    override fun build(): Inventory {
         check(row in 1..6) { "Row must be in the range of 1 to 6." }
 
         val inventory = Bukkit.createInventory(null, row * 9, displayName)
