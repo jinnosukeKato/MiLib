@@ -10,11 +10,9 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin.getProvidingPlugin
 
 @MiLibDSL
-fun inventoryBuilder(lambda: InventoryBuilder.() -> Unit): Inventory {
+fun inventoryBuilder(init: InventoryBuilder.() -> Unit): Inventory {
     val inventoryBuilder = InventoryBuilder()
-    // lambdaを実行
-    inventoryBuilder.lambda()
-    // ビルドをかけて Inventory で返す
+    inventoryBuilder.init()
     return inventoryBuilder.build()
 }
 
@@ -25,9 +23,9 @@ class InventoryBuilder {
     private val itemMap = mutableMapOf<Int, ItemStack>()
     private val eventSet = mutableSetOf<OnClickEventBuilder>()
 
-    fun setItem(lambda: SlotBuilder.() -> Unit) {
+    fun setItem(init: SlotBuilder.() -> Unit) {
         val slotBuilder = SlotBuilder()
-        slotBuilder.lambda()
+        slotBuilder.init()
         val builtInvSlotBuilder = slotBuilder.build()
         check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
@@ -35,9 +33,9 @@ class InventoryBuilder {
         eventSet += builtInvSlotBuilder.invOnClickEventBuilderSet
     }
 
-    fun setItems(lambda: MultiSlotsBuilder.() -> Unit) {
+    fun setItems(init: MultiSlotsBuilder.() -> Unit) {
         val multiSlotsBuilder = MultiSlotsBuilder()
-        multiSlotsBuilder.lambda()
+        multiSlotsBuilder.init()
 
         for (builder in multiSlotsBuilder.build()) {
             val built = builder.build()
@@ -69,9 +67,9 @@ class SlotBuilder {
     var displayOnly = false
     val invOnClickEventBuilderSet: MutableSet<OnClickEventBuilder> = mutableSetOf()
 
-    fun onClick(lambda: OnClickEventBuilder.() -> Unit) {
+    fun onClick(init: OnClickEventBuilder.() -> Unit) {
         val invClkEventBuilder = OnClickEventBuilder(slot, displayOnly)
-        invClkEventBuilder.lambda()
+        invClkEventBuilder.init()
         invOnClickEventBuilderSet += invClkEventBuilder
     }
 
@@ -90,10 +88,10 @@ class MultiSlotsBuilder {
     var displayOnly = false
 
     private val slotBuilderSet = mutableSetOf<SlotBuilder>()
-    private val onClickEventBuilderLambdaSet = mutableSetOf<OnClickEventBuilder.() -> Unit>()
+    private val onClickEventBuilderInitSet = mutableSetOf<OnClickEventBuilder.() -> Unit>()
 
-    fun onClick(lambda: OnClickEventBuilder.() -> Unit) {
-        onClickEventBuilderLambdaSet += lambda
+    fun onClick(init: OnClickEventBuilder.() -> Unit) {
+        onClickEventBuilderInitSet += init
     }
 
     fun build(): MutableSet<SlotBuilder> {
@@ -104,8 +102,8 @@ class MultiSlotsBuilder {
             slotBuilder.itemStack = itemStack
             slotBuilder.displayOnly = displayOnly
 
-            for (lambda in onClickEventBuilderLambdaSet) {
-                slotBuilder.onClick(lambda)
+            for (init in onClickEventBuilderInitSet) {
+                slotBuilder.onClick(init)
             }
 
             slotBuilderSet += slotBuilder
