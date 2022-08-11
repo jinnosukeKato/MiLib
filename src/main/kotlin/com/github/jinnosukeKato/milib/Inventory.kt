@@ -28,7 +28,7 @@ class InventoryBuilder : Builder<Inventory> {
         check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
         itemMap[builtInvSlotBuilder.slot] = builtInvSlotBuilder.itemStack
-        eventSet += builtInvSlotBuilder.invOnClickEventBuilderSet
+        eventSet += builtInvSlotBuilder.eventBuilderSet
     }
 
     fun setItems(init: MultiSlotsBuilder.() -> Unit) {
@@ -40,7 +40,7 @@ class InventoryBuilder : Builder<Inventory> {
             check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
             itemMap[built.slot] = built.itemStack
-            eventSet += built.invOnClickEventBuilderSet
+            eventSet += built.eventBuilderSet
         }
     }
 
@@ -63,17 +63,17 @@ class SlotBuilder {
     var slot = 0
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
-    val invOnClickEventBuilderSet: MutableSet<OnClickEventBuilder> = mutableSetOf()
+    val eventBuilderSet: MutableSet<OnClickEventBuilder> = mutableSetOf()
 
     fun onClick(init: OnClickEventBuilder.() -> Unit) {
-        val invClkEventBuilder = OnClickEventBuilder(slot, displayOnly)
-        invClkEventBuilder.init()
-        invOnClickEventBuilderSet += invClkEventBuilder
+        val eventBuilder = OnClickEventBuilder(slot, displayOnly)
+        eventBuilder.init()
+        eventBuilderSet += eventBuilder
     }
 
     fun build(): SlotBuilder {
-        if (invOnClickEventBuilderSet.isEmpty() && displayOnly)
-            invOnClickEventBuilderSet += OnClickEventBuilder(slot, true)
+        if (eventBuilderSet.isEmpty() && displayOnly)
+            eventBuilderSet += OnClickEventBuilder(slot, true)
 
         return this
     }
@@ -110,6 +110,7 @@ class MultiSlotsBuilder {
     }
 }
 
+// TODO: 2022/08/11 builderを継承させる
 @MiLibDSL
 class OnClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
