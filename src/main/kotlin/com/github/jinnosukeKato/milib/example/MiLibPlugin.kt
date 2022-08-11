@@ -1,6 +1,8 @@
 package com.github.jinnosukeKato.milib.example
 
 import com.github.jinnosukeKato.milib.inventoryBuilder
+import com.github.jinnosukeKato.milib.itemStackBuilder
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -24,7 +26,14 @@ class MiLibPlugin : JavaPlugin(), Listener {
 
                 setItem {
                     slot = 1
-                    itemStack = ItemStack(Material.BAKED_POTATO)
+                    itemStack =
+                        itemStackBuilder {
+                            type = Material.POTATO
+                            itemMeta {
+                                displayName(Component.text("This is POTATO"))
+                            }
+                        }
+
                     displayOnly = true
                 }
 
