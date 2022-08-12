@@ -30,7 +30,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                         itemStackBuilder {
                             type = Material.POTATO
                             itemMeta {
-                                displayName(Component.text("This is POTATO"))
+                                displayName(Component.text("This is a POTATO"))
                             }
                         }
 
