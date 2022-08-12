@@ -1,5 +1,6 @@
 package com.github.jinnosukeKato.milib
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -47,7 +48,7 @@ class InventoryBuilder : Builder<Inventory> {
     override fun build(): Inventory {
         check(row in 1..6) { "Row must be in the range of 1 to 6." }
 
-        val inventory = Bukkit.createInventory(null, row * 9, displayName)
+        val inventory = Bukkit.createInventory(null, row * 9, Component.text(displayName))
         eventSet.forEach {
             it.inventory = inventory
         }
