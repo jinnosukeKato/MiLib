@@ -126,10 +126,10 @@ class OnClickEventBuilder(private val slot: Int, private val displayOnly: Boolea
     fun onEvent(event: InventoryClickEvent) {
         check(slot in 0..inventory.size) { "Slot must be in the range of 0 to $inventory.size." }
 
-        if (event.inventory != inventory || event.currentItem == null || event.currentItem!!.type.isAir)
+        if (event.inventory != inventory || event.slot != slot)
             return
 
-        if (event.currentItem != inventory.getItem(slot))
+        if (event.currentItem != inventory.getItem(slot) || event.currentItem == null || event.currentItem!!.type.isAir)
             return
 
         event.isCancelled = displayOnly
