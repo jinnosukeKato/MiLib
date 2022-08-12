@@ -21,21 +21,21 @@ class InventoryBuilder : Builder<Inventory> {
     private val itemMap = mutableMapOf<Int, ItemStack>()
     private val eventSet = mutableSetOf<OnClickEventBuilder>()
 
-    fun setItem(init: SlotBuilder.() -> Unit) {
-        val slotBuilder = SlotBuilder()
-        slotBuilder.init()
-        val builtInvSlotBuilder = slotBuilder.build()
+    fun setItem(init: SlotData.() -> Unit) {
+        val slotData = SlotData()
+        slotData.init()
+        val builtInvSlotBuilder = slotData.build()
         check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
         itemMap[builtInvSlotBuilder.slot] = builtInvSlotBuilder.itemStack
         eventSet += builtInvSlotBuilder.eventBuilderSet
     }
 
-    fun setItems(init: MultiSlotsBuilder.() -> Unit) {
-        val multiSlotsBuilder = MultiSlotsBuilder()
-        multiSlotsBuilder.init()
+    fun setItems(init: MultiSlotDataBuilder.() -> Unit) {
+        val multiSlotDataBuilder = MultiSlotDataBuilder()
+        multiSlotDataBuilder.init()
 
-        for (builder in multiSlotsBuilder.build()) {
+        for (builder in multiSlotDataBuilder.build()) {
             val built = builder.build()
             check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
@@ -59,7 +59,7 @@ class InventoryBuilder : Builder<Inventory> {
 }
 
 @MiLibDSL
-class SlotBuilder {
+class SlotData {
     var slot = 0
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
@@ -71,7 +71,7 @@ class SlotBuilder {
         eventBuilderSet += eventBuilder
     }
 
-    fun build(): SlotBuilder {
+    fun build(): SlotData {
         if (eventBuilderSet.isEmpty() && displayOnly)
             eventBuilderSet += OnClickEventBuilder(slot, true)
 
@@ -80,33 +80,33 @@ class SlotBuilder {
 }
 
 @MiLibDSL
-class MultiSlotsBuilder {
-    var slotRange = 0..5
+class MultiSlotDataBuilder {
+    var slotRange = 0..0
     var itemStack = ItemStack(Material.AIR)
     var displayOnly = false
 
-    private val slotBuilderSet = mutableSetOf<SlotBuilder>()
+    private val slotDataSet = mutableSetOf<SlotData>()
     private val onClickEventBuilderInitSet = mutableSetOf<OnClickEventBuilder.() -> Unit>()
 
     fun onClick(init: OnClickEventBuilder.() -> Unit) {
         onClickEventBuilderInitSet += init
     }
 
-    fun build(): MutableSet<SlotBuilder> {
+    fun build(): MutableSet<SlotData> {
         for (slot in slotRange) {
-            val slotBuilder = SlotBuilder()
+            val slotData = SlotData()
 
-            slotBuilder.slot = slot
-            slotBuilder.itemStack = itemStack
-            slotBuilder.displayOnly = displayOnly
+            slotData.slot = slot
+            slotData.itemStack = itemStack
+            slotData.displayOnly = displayOnly
 
             for (init in onClickEventBuilderInitSet) {
-                slotBuilder.onClick(init)
+                slotData.onClick(init)
             }
 
-            slotBuilderSet += slotBuilder
+            slotDataSet += slotData
         }
-        return slotBuilderSet
+        return slotDataSet
     }
 }
 
