@@ -29,6 +29,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     itemStack =
                         itemStackBuilder {
                             type = Material.POTATO
+                            amount = 1
                             itemMeta {
                                 displayName(Component.text("This is a POTATO"))
                             }
