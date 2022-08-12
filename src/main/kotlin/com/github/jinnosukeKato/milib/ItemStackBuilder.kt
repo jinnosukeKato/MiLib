@@ -1,7 +1,6 @@
 package com.github.jinnosukeKato.milib
 
 import org.bukkit.Material
-import org.bukkit.block.data.BlockData
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 
@@ -14,7 +13,6 @@ fun itemStackBuilder(init: ItemStackBuilder.() -> Unit): ItemStack {
 class ItemStackBuilder : Builder<ItemStack> {
     var type = Material.AIR
     var amount = 0
-    lateinit var data: BlockData
     private lateinit var metaInit: ItemMeta.() -> Unit
 
     fun itemMeta(init: ItemMeta.() -> Unit) {
@@ -31,5 +29,3 @@ class ItemStackBuilder : Builder<ItemStack> {
         return itemStack
     }
 }
-
-// TODO: 2022/08/11 BlockDataBuilderを実装する
