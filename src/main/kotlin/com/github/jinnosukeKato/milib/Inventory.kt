@@ -35,8 +35,8 @@ class InventoryBuilder : Builder<Inventory> {
         val multiSlotDataBuilder = MultiSlotDataBuilder()
         multiSlotDataBuilder.init()
 
-        for (builder in multiSlotDataBuilder.build()) {
-            val built = builder.build()
+        for (slotData in multiSlotDataBuilder.build()) {
+            val built = slotData.build()
             check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
             itemMap[built.slot] = built.itemStack
