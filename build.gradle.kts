@@ -5,8 +5,9 @@ val mcVersion = "1.19.1"
 
 plugins {
     kotlin("jvm") version "1.7.10"
-    id("com.github.johnrengelman.shadow") version  "7.1.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("dev.s7a.gradle.minecraft.server") version "1.2.0"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
 
 group = "com.github.jinnosukeKato"
@@ -27,6 +28,14 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
     testCompileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
     testImplementation(kotlin("test"))
+}
+
+bukkit {
+    main = "com.github.jinnosukeKato.milib.example.MiLibPlugin"
+    name = "MiLib-Example-Plugin"
+    version = getVersion().toString()
+    apiVersion = "1.19"
+    author = "InI"
 }
 
 task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
