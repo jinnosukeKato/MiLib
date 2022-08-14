@@ -1,4 +1,4 @@
-package com.github.jinnosukeKato.milib.example
+package com.github.jinnosukeKato.milibExamplePlugin
 
 import com.github.jinnosukeKato.milib.inventoryBuilder
 import com.github.jinnosukeKato.milib.itemStackBuilder

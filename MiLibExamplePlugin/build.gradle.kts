@@ -1,7 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
-
-val mcVersion = "1.19.1"
 
 plugins {
     kotlin("jvm") version "1.7.10"
@@ -12,6 +9,7 @@ plugins {
 
 group = "com.github.jinnosukeKato"
 version = "0.3"
+val mcVersion = "1.19.1"
 
 java {
     toolchain {
@@ -26,26 +24,27 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
+    implementation(project(":Library"))
 }
 
 bukkit {
-    main = "com.github.jinnosukeKato.milib.example.MiLibPlugin"
+    main = "com.github.jinnosukeKato.milibExamplePlugin.MiLibPlugin"
     name = "MiLib-Example-Plugin"
     version = getVersion().toString()
     apiVersion = "1.19"
     author = "InI"
 }
 
-task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
+task<dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask>("buildAndLaunchServer") {
     dependsOn("shadowJar") // ビルドタスク
     doFirst {
         copy {
-            from(buildDir.resolve("libs/MiLib-$version-all.jar")) // build/libs/example.jar
+            from(buildDir.resolve("libs/MiLibExamplePlugin-$version-all.jar")) // build/libs/example.jar
             into(buildDir.resolve("MinecraftPaperServer/plugins")) // build/MinecraftPaperServer/plugins
         }
     }
 
-    jarUrl.set(LaunchMinecraftServerTask.JarUrl.Paper(mcVersion))
+    jarUrl.set(dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask.JarUrl.Paper(mcVersion))
     jarName.set("server.jar")
     serverDirectory.set(buildDir.resolve("MinecraftPaperServer")) // build/MinecraftPaperServer
     nogui.set(true)

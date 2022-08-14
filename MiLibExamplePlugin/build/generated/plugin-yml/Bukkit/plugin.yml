@@ -1,0 +1,5 @@
+name: MiLib-Example-Plugin
+version: 0.3
+main: com.github.jinnosukeKato.milibExamplePlugin.MiLibPlugin
+author: InI
+api-version: 1.19
