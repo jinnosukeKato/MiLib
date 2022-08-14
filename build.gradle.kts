@@ -26,8 +26,6 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
-    testCompileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
-    testImplementation(kotlin("test"))
 }
 
 bukkit {
@@ -52,10 +50,6 @@ task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
     serverDirectory.set(buildDir.resolve("MinecraftPaperServer")) // build/MinecraftPaperServer
     nogui.set(true)
     agreeEula.set(true)
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {
