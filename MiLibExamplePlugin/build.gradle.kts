@@ -7,19 +7,12 @@ plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
 
-group = "com.github.jinnosukeKato"
-version = "0.3"
 val mcVersion = "1.19.1"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
-}
-
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 }
 
 dependencies {
