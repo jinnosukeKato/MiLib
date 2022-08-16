@@ -1,4 +1,4 @@
-package com.github.jinnosukeKato.milib
+package io.github.jinnosukeKato.milib
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack

@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-val mcVersion = "1.19.1"
-
 plugins {
     kotlin("jvm") apply true
     `maven-publish`
 }
+
+val mcVersion = "1.19.1"
 
 java {
     toolchain {
@@ -15,8 +13,4 @@ java {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }

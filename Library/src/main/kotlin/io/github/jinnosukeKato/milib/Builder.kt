@@ -1,4 +1,4 @@
-package com.github.jinnosukeKato.milib
+package io.github.jinnosukeKato.milib
 
 interface Builder<T> {
     fun build(): T

@@ -1,4 +1,4 @@
-package com.github.jinnosukeKato.milib
+package io.github.jinnosukeKato.milib
 
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit

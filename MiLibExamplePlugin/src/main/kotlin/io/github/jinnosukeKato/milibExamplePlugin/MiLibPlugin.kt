@@ -1,7 +1,7 @@
-package com.github.jinnosukeKato.milibExamplePlugin
+package io.github.jinnosukeKato.milibExamplePlugin
 
-import com.github.jinnosukeKato.milib.inventoryBuilder
-import com.github.jinnosukeKato.milib.itemStackBuilder
+import io.github.jinnosukeKato.milib.inventoryBuilder
+import io.github.jinnosukeKato.milib.itemStackBuilder
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player

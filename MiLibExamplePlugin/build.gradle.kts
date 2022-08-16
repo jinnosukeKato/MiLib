@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") apply true
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -42,8 +40,4 @@ task<dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask>("buildAndL
     serverDirectory.set(buildDir.resolve("MinecraftPaperServer")) // build/MinecraftPaperServer
     nogui.set(true)
     agreeEula.set(true)
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }
