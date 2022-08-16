@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val mcVersion = "1.19.1"
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") apply true
     `maven-publish`
 }
 
