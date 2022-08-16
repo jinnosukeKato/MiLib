@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     version = "0.3"
-    group = "com.github.jinnosukeKato"
+    group = "io.github.jinnosukeKato"
 }
 
 subprojects {
