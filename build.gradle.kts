@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-    version = "0.3"
+    version = "1.0.0"
     group = "io.github.jinnosukeKato"
 }
 
