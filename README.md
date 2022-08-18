@@ -1,5 +1,8 @@
 # MiLib
 
+## About
+This is library for easily writing inventory GUI.
+
 ## Install
 ```kotlin
   // build.gradle.kts
