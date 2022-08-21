@@ -44,9 +44,7 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     displayOnly = true
 
                     onClick {
-                        content = {
-                            (it.whoClicked as Player).sendMessage("You clicked!")
-                        }
+                        (it.whoClicked as Player).sendMessage("You clicked!")
                     }
                 }
 
@@ -55,10 +53,8 @@ class MiLibPlugin : JavaPlugin(), Listener {
                     itemStack = ItemStack(Material.ACACIA_BOAT)
 
                     onClick {
-                        content = {
-                            (it.whoClicked as Player).sendMessage("You clicked!")
-                            it.isCancelled = true
-                        }
+                        (it.whoClicked as Player).sendMessage("You clicked!")
+                        it.isCancelled = true
                     }
                 }
             }

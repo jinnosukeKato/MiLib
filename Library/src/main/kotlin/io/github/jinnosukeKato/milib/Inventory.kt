@@ -38,7 +38,7 @@ class InventoryBuilder : Builder<Inventory> {
     var row = 1
 
     private val itemMap = mutableMapOf<Int, ItemStack>()
-    private val eventSet = mutableSetOf<OnClickEventBuilder>()
+    private val eventSet = mutableSetOf<OnClickEventListener>()
 
     /**
      * The method for set an Item.
@@ -52,7 +52,7 @@ class InventoryBuilder : Builder<Inventory> {
         check(builtInvSlotBuilder.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
         itemMap[builtInvSlotBuilder.slot] = builtInvSlotBuilder.itemStack
-        eventSet += builtInvSlotBuilder.eventBuilderSet
+        eventSet += builtInvSlotBuilder.eventListenerSet
     }
 
     /**
@@ -69,7 +69,7 @@ class InventoryBuilder : Builder<Inventory> {
             check(built.slot in 0..row * 9) { "Slot must be in the range of 0 to ${row * 9}." }
 
             itemMap[built.slot] = built.itemStack
-            eventSet += built.eventBuilderSet
+            eventSet += built.eventListenerSet
         }
     }
 
@@ -109,20 +109,20 @@ class SlotData {
      */
     var displayOnly = false
 
-    val eventBuilderSet: MutableSet<OnClickEventBuilder> = mutableSetOf()
+    val eventListenerSet: MutableSet<OnClickEventListener> = mutableSetOf()
 
     /**
      * This method can write event what fire at click this item.
      */
-    fun onClick(init: OnClickEventBuilder.() -> Unit) {
-        val eventBuilder = OnClickEventBuilder(slot, displayOnly)
-        eventBuilder.init()
-        eventBuilderSet += eventBuilder
+    fun onClick(init: (InventoryClickEvent) -> Unit) {
+        val eventBuilder = OnClickEventListener(slot, displayOnly)
+        eventBuilder.content = init
+        eventListenerSet += eventBuilder
     }
 
     fun build(): SlotData {
-        if (eventBuilderSet.isEmpty() && displayOnly)
-            eventBuilderSet += OnClickEventBuilder(slot, true)
+        if (eventListenerSet.isEmpty() && displayOnly)
+            eventListenerSet += OnClickEventListener(slot, true)
 
         return this
     }
@@ -150,13 +150,13 @@ class MultiSlotDataBuilder {
     var displayOnly = false
 
     private val slotDataSet = mutableSetOf<SlotData>()
-    private val onClickEventBuilderInitSet = mutableSetOf<OnClickEventBuilder.() -> Unit>()
+    private val eventListenerInitSet = mutableSetOf<(InventoryClickEvent) -> Unit>()
 
     /**
      * This method can write event what fire at click this item.
      */
-    fun onClick(init: OnClickEventBuilder.() -> Unit) {
-        onClickEventBuilderInitSet += init
+    fun onClick(init: (InventoryClickEvent) -> Unit) {
+        eventListenerInitSet += init
     }
 
     fun build(): MutableSet<SlotData> {
@@ -167,7 +167,7 @@ class MultiSlotDataBuilder {
             slotData.itemStack = itemStack
             slotData.displayOnly = displayOnly
 
-            for (init in onClickEventBuilderInitSet) {
+            for (init in eventListenerInitSet) {
                 slotData.onClick(init)
             }
 
@@ -178,7 +178,7 @@ class MultiSlotDataBuilder {
 }
 
 @MiLibDSL
-class OnClickEventBuilder(private val slot: Int, private val displayOnly: Boolean) : Listener {
+class OnClickEventListener(private val slot: Int, private val displayOnly: Boolean) : Listener {
     lateinit var inventory: Inventory
     var content: (InventoryClickEvent) -> Unit = {}
 
