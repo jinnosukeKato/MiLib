@@ -12,6 +12,6 @@ This is library for easily writing inventory GUI.
   }
   
   dependencies {
-    implementation("com.github.jinnosukeKato:MiLib:v1.0.1")
+    implementation("com.github.jinnosukeKato:MiLib:v2.0.0")
   }
 ```
