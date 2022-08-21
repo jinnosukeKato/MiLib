@@ -4,7 +4,7 @@ interface Builder<T> {
     fun build(): T
 }
 
-fun <P, T : Builder<P>> build(builder: T, init: T.() -> Unit): P {
-    builder.init()
-    return builder.build()
+fun <P, T : Builder<P>> T.buildWith(init: T.() -> Unit): P {
+    this.init()
+    return this.build()
 }

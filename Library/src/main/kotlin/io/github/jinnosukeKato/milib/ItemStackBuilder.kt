@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta
 
 @MiLibDSL
 fun itemStackBuilder(init: ItemStackBuilder.() -> Unit): ItemStack {
-    return build(ItemStackBuilder(), init)
+    return ItemStackBuilder().buildWith(init)
 }
 
 @MiLibDSL

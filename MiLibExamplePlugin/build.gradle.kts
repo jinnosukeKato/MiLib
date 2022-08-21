@@ -21,7 +21,7 @@ dependencies {
 bukkit {
     main = "$group.milibExamplePlugin.MiLibPlugin"
     name = "MiLib-Example-Plugin"
-    version = getVersion().toString()
+    version = rootProject.version.toString()
     apiVersion = "1.19"
     author = "InI"
 }

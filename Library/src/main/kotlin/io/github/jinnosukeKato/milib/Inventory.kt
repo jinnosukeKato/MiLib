@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin.getProvidingPlugin
 
 @MiLibDSL
 fun inventoryBuilder(init: InventoryBuilder.() -> Unit): Inventory {
-    return build(InventoryBuilder(), init)
+    return InventoryBuilder().buildWith(init)
 }
 
 @MiLibDSL
